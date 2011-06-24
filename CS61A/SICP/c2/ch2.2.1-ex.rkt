@@ -43,3 +43,47 @@
   (let ((odd (odd? f)))
     (cons f
           (filter (lambda (v) (eq? odd (odd? v))) vals))))
+
+;; ex 2.21
+(define (square-list l)
+  (if (null? l)
+      '()
+      (cons (* (car l) (car l))
+            (square-list (cdr l)))))
+
+(define (square-list l)
+  (map (lambda (v) (* v v)) l))
+      
+
+;; ex 2.23
+(define (for-each proc l)
+  (map proc l)
+  #t)
+
+;; ex 2.25
+(define a '(1 3 (5 7) 9))
+(define b '((7)))
+(define c '(1 (2 (3 (4 (5 (6 7)))))))
+
+;; ex 2.27
+(define (deep-reverse l)
+  (define (iter in out)
+    (if (null? in)
+        out
+        (iter (cdr in)
+              (cons (deep-reverse (car in))
+                    out))))
+  (if (list? l)
+      (iter l '())
+      l))
+
+;; ex 2.28
+(define (fringe l)
+  (define (iter in out)
+    (cond ((null? in) out)
+          ((list? (car in))
+           (iter (cdr in)
+                 (append out (iter (car in) '()))))
+          (else
+           (iter (cdr in) (append out (list (car in)))))))
+  (iter l '()))
